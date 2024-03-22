@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "G:\\ITEC\\2024Winter\\ITEC145-ProgFun\\02-Assignments\\Final\\GrogueTheSecondOne\\GrogueTheSecondOne\\GrogueTheSecondOne.csproj": {}
+    "G:\\ITEC\\2024Winter\\ITEC145-ProgFun\\02-Assignments\\Final\\GrogueWork\\GrogueTheSecondOne\\GrogueTheSecondOne.csproj": {}
   },
   "projects": {
-    "G:\\ITEC\\2024Winter\\ITEC145-ProgFun\\02-Assignments\\Final\\GrogueTheSecondOne\\GrogueTheSecondOne\\GrogueTheSecondOne.csproj": {
+    "G:\\ITEC\\2024Winter\\ITEC145-ProgFun\\02-Assignments\\Final\\GrogueWork\\GrogueTheSecondOne\\GrogueTheSecondOne.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "G:\\ITEC\\2024Winter\\ITEC145-ProgFun\\02-Assignments\\Final\\GrogueTheSecondOne\\GrogueTheSecondOne\\GrogueTheSecondOne.csproj",
+        "projectUniqueName": "G:\\ITEC\\2024Winter\\ITEC145-ProgFun\\02-Assignments\\Final\\GrogueWork\\GrogueTheSecondOne\\GrogueTheSecondOne.csproj",
         "projectName": "GrogueTheSecondOne",
-        "projectPath": "G:\\ITEC\\2024Winter\\ITEC145-ProgFun\\02-Assignments\\Final\\GrogueTheSecondOne\\GrogueTheSecondOne\\GrogueTheSecondOne.csproj",
+        "projectPath": "G:\\ITEC\\2024Winter\\ITEC145-ProgFun\\02-Assignments\\Final\\GrogueWork\\GrogueTheSecondOne\\GrogueTheSecondOne.csproj",
         "packagesPath": "C:\\Users\\graham.campbell1\\.nuget\\packages\\",
-        "outputPath": "G:\\ITEC\\2024Winter\\ITEC145-ProgFun\\02-Assignments\\Final\\GrogueTheSecondOne\\GrogueTheSecondOne\\obj\\",
+        "outputPath": "G:\\ITEC\\2024Winter\\ITEC145-ProgFun\\02-Assignments\\Final\\GrogueWork\\GrogueTheSecondOne\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
