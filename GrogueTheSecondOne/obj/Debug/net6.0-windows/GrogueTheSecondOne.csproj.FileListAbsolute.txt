@@ -1,0 +1,17 @@
+G:\ITEC\2024Winter\ITEC145-ProgFun\02-Assignments\Final\GrogueTheSecondOne\GrogueTheSecondOne\bin\Debug\net6.0-windows\GrogueTheSecondOne.exe
+G:\ITEC\2024Winter\ITEC145-ProgFun\02-Assignments\Final\GrogueTheSecondOne\GrogueTheSecondOne\bin\Debug\net6.0-windows\GrogueTheSecondOne.deps.json
+G:\ITEC\2024Winter\ITEC145-ProgFun\02-Assignments\Final\GrogueTheSecondOne\GrogueTheSecondOne\bin\Debug\net6.0-windows\GrogueTheSecondOne.runtimeconfig.json
+G:\ITEC\2024Winter\ITEC145-ProgFun\02-Assignments\Final\GrogueTheSecondOne\GrogueTheSecondOne\bin\Debug\net6.0-windows\GrogueTheSecondOne.dll
+G:\ITEC\2024Winter\ITEC145-ProgFun\02-Assignments\Final\GrogueTheSecondOne\GrogueTheSecondOne\bin\Debug\net6.0-windows\GrogueTheSecondOne.pdb
+G:\ITEC\2024Winter\ITEC145-ProgFun\02-Assignments\Final\GrogueTheSecondOne\GrogueTheSecondOne\obj\Debug\net6.0-windows\GrogueTheSecondOne.csproj.AssemblyReference.cache
+G:\ITEC\2024Winter\ITEC145-ProgFun\02-Assignments\Final\GrogueTheSecondOne\GrogueTheSecondOne\obj\Debug\net6.0-windows\GrogueTheSecondOne.Form1.resources
+G:\ITEC\2024Winter\ITEC145-ProgFun\02-Assignments\Final\GrogueTheSecondOne\GrogueTheSecondOne\obj\Debug\net6.0-windows\GrogueTheSecondOne.csproj.GenerateResource.cache
+G:\ITEC\2024Winter\ITEC145-ProgFun\02-Assignments\Final\GrogueTheSecondOne\GrogueTheSecondOne\obj\Debug\net6.0-windows\GrogueTheSecondOne.GeneratedMSBuildEditorConfig.editorconfig
+G:\ITEC\2024Winter\ITEC145-ProgFun\02-Assignments\Final\GrogueTheSecondOne\GrogueTheSecondOne\obj\Debug\net6.0-windows\GrogueTheSecondOne.AssemblyInfoInputs.cache
+G:\ITEC\2024Winter\ITEC145-ProgFun\02-Assignments\Final\GrogueTheSecondOne\GrogueTheSecondOne\obj\Debug\net6.0-windows\GrogueTheSecondOne.AssemblyInfo.cs
+G:\ITEC\2024Winter\ITEC145-ProgFun\02-Assignments\Final\GrogueTheSecondOne\GrogueTheSecondOne\obj\Debug\net6.0-windows\GrogueTheSecondOne.csproj.CoreCompileInputs.cache
+G:\ITEC\2024Winter\ITEC145-ProgFun\02-Assignments\Final\GrogueTheSecondOne\GrogueTheSecondOne\obj\Debug\net6.0-windows\GrogueTheSecondOne.dll
+G:\ITEC\2024Winter\ITEC145-ProgFun\02-Assignments\Final\GrogueTheSecondOne\GrogueTheSecondOne\obj\Debug\net6.0-windows\refint\GrogueTheSecondOne.dll
+G:\ITEC\2024Winter\ITEC145-ProgFun\02-Assignments\Final\GrogueTheSecondOne\GrogueTheSecondOne\obj\Debug\net6.0-windows\GrogueTheSecondOne.pdb
+G:\ITEC\2024Winter\ITEC145-ProgFun\02-Assignments\Final\GrogueTheSecondOne\GrogueTheSecondOne\obj\Debug\net6.0-windows\GrogueTheSecondOne.genruntimeconfig.cache
+G:\ITEC\2024Winter\ITEC145-ProgFun\02-Assignments\Final\GrogueTheSecondOne\GrogueTheSecondOne\obj\Debug\net6.0-windows\ref\GrogueTheSecondOne.dll
