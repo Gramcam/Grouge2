@@ -4,10 +4,11 @@ namespace GrogueTheSecondOne
     {
         List<List<char>> playSpaceList = new List<List<char>>();
         List<List<char>> OrigplaySpaceList = new List<List<char>>();
+
+        private mobEnemy playspaceEnemy;
         public Form1()
         {
             InitializeComponent();
-            //test commentddsa
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -63,7 +64,9 @@ namespace GrogueTheSecondOne
             x = rnd.Next(1, playSpaceList[1].Count-1);
             y = rnd.Next(1, playSpaceList.Count - 1);
 
-            playSpaceList[y][x] = 'n';
+            playspaceEnemy = new mobEnemy('N', y, x);
+
+            playSpaceList[y][x] = playspaceEnemy.Sprite;
 
             string newline = "";
             //Get the Chars from the playspace, rebuild into a new string, 
