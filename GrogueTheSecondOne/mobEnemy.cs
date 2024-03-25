@@ -10,16 +10,26 @@ namespace GrogueTheSecondOne
     {
         char asciiSprite;
         int rowNum, colNum;
+        int prevRowNum, prevColNum;
 
         public int Xloc { get { return colNum; } }
         public int YLoc { get { return rowNum; } }
+        public int prevXloc { get { return prevColNum; } }
+        public int prevYLoc { get { return prevRowNum; } }
         public char Sprite { get { return asciiSprite; } }
 
-        public mobEnemy(char Sprite, int row, int col)
+        public mobEnemy(int row, int col)
         {
-            asciiSprite = Sprite;
+            asciiSprite = 'N';
             rowNum = row;
             colNum = col;
+        }
+
+        public void moveUp(mobEnemy M)
+        {
+            prevColNum = colNum;
+            prevRowNum = rowNum;
+            M.colNum += 1;
         }
     }
 
