@@ -4,10 +4,11 @@ namespace GrogueTheSecondOne
 {
     public partial class Form1 : Form
     {
-        //Lists to store the Playfield
-        List<List<char>> playSpaceList = new List<List<char>>();
-        //TODO create a loop to copy nested lists.
-        List<List<char>> OrigplaySpaceList = new List<List<char>>();
+        //Map Fields
+        const int PLAYSPACEROWS = 12;
+        const int PLAYSPACECOL = 49;
+        public char[,] charOriginalMapState = new char[PLAYSPACEROWS, PLAYSPACECOL];
+        char[,] charPlayArea = new char[PLAYSPACEROWS, PLAYSPACECOL];
 
         //List to store EnemyMobs
         List<mobEnemy> enemyList = new List<mobEnemy>();
@@ -30,14 +31,14 @@ namespace GrogueTheSecondOne
             //Choose random location that isnt populated
             do
             {
-                x = rnd.Next(1, playSpaceList[1].Count - 1);
-                y = rnd.Next(1, playSpaceList.Count - 1);
+                x = rnd.Next(1, PLAYSPACECOL - 1);
+                y = rnd.Next(1, PLAYSPACEROWS - 1);
 
-            } while (playSpaceList[y][x] == 'N' || playSpaceList[y][x] == '#');
+            } while (charPlayArea[y, x] == 'N' || charPlayArea[y, x] == '#');
 
             playSpaceEnemy = new mobEnemy(y, x);
 
-            playSpaceList[y][x] = playSpaceEnemy.Sprite;
+            charPlayArea[y, x] = playSpaceEnemy.Sprite;
             enemyList.Add(playSpaceEnemy);
 
             string newline = "";
@@ -72,23 +73,19 @@ namespace GrogueTheSecondOne
                 MessageBox.Show("Failed to retrieve level data!");
             }
 
-            //Assign to nested lists to create a playgrid
-            foreach (string line in lstPlayArea.Items)
+            //Assign to nested lists to create a playgrid //CHANGE THIS TO A FOR LOOP!!!!!
+            for (int i = 0; i<lstPlayArea.Items.Count; i++)
             {
-                //Store each char within each line in a list
-                List<char> lineChars = new List<char>();
-                for (int col = 0; col < line.Length; col++)
+                string line = lstPlayArea.Items[i].ToString();
+                List<char> readChars = new List<char>();
+                for (int j = 0; j < line.Length; j++)
                 {
-                    char readChar = line.ToString()[col];
-                    lineChars.Add(readChar);
+                    readChars.Add(line[j]);
                 }
-                //Add that row of chars to the PlaySpace list
-                playSpaceList.Add(lineChars);
+                OrigplaySpaceList.Add(readChars);
+                playSpaceList.Add(readChars);
 
             }
-
-            //TODO create a loop to copy the Lists
-            OrigplaySpaceList = playSpaceList;
 
         }
 
