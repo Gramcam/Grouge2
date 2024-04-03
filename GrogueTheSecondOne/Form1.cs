@@ -14,6 +14,7 @@ namespace GrogueTheSecondOne
         List<mobEnemy> enemyList = new List<mobEnemy>();
 
         private mobEnemy playSpaceEnemy;
+       
         public Form1()
         {
             InitializeComponent();
@@ -44,9 +45,9 @@ namespace GrogueTheSecondOne
             string newline = "";
             //Get the Chars from the playspace, rebuild into a new string, 
             //Place string into the listbox
-            for (x = 0; x < playSpaceList[y].Count; x++)
+            for (x = 0; x < PLAYSPACECOL; x++)
             {
-                char readChar = playSpaceList[y][x];
+                char readChar = charPlayArea[y, x];
                 newline += readChar;
             }
 
@@ -73,17 +74,17 @@ namespace GrogueTheSecondOne
                 MessageBox.Show("Failed to retrieve level data!");
             }
 
-            //Assign to nested lists to create a playgrid //CHANGE THIS TO A FOR LOOP!!!!!
+            //Nested loop to load level into two 2d arrays
             for (int i = 0; i<lstPlayArea.Items.Count; i++)
             {
                 string line = lstPlayArea.Items[i].ToString();
                 List<char> readChars = new List<char>();
                 for (int j = 0; j < line.Length; j++)
                 {
-                    readChars.Add(line[j]);
+                    charOriginalMapState[i, j] = line[j];
+                    charPlayArea[i,j] = line[j];
                 }
-                OrigplaySpaceList.Add(readChars);
-                playSpaceList.Add(readChars);
+                
 
             }
 
@@ -100,33 +101,30 @@ namespace GrogueTheSecondOne
 
         void UpdateEnemyRows(mobEnemy Enemy)
         {
-            char readchar;
             string newline = "";
-            playSpaceList[Enemy.YLoc][Enemy.Xloc] = Enemy.Sprite;
-            playSpaceList[Enemy.prevYLoc][Enemy.prevXloc] = OrigplaySpaceList[Enemy.prevYLoc][Enemy.prevXloc];
+
+            //Change the chars stored in the playspace
+            //Restore the previous tile to the environment
+            charPlayArea[Enemy.YLoc, Enemy.Xloc] = Enemy.Sprite;
+            charPlayArea[Enemy.prevYLoc, Enemy.prevXloc] = charOriginalMapState[Enemy.prevYLoc, Enemy.prevXloc];
 
             //Redraw Original Map
-            for (int g = 0; g < OrigplaySpaceList[Enemy.YLoc].Count; g++)
+            for (int g = 0; g < charOriginalMapState.GetLength(1); g++)
             {
-                newline += OrigplaySpaceList[Enemy.YLoc][g];
+                newline += charOriginalMapState[Enemy.YLoc, g];
             }
             lstPlayArea.Items[Enemy.YLoc] = newline;
-                lstPlayArea.Items[Enemy.prevYLoc] = OrigplaySpaceList[Enemy.prevYLoc];
-
-            int x, y;
-            x = Enemy.Xloc;
-            y = Enemy.YLoc;
+            lstPlayArea.Items[Enemy.prevYLoc] = newline;
 
             newline = "";
-            //Get the Chars from the playspace, rebuild into a new string, 
+            //Rebuild listbox to display the active map
             //Place string into the listbox
-            for (x = 0; x < playSpaceList[y].Count; x++)
+            for (int x = 0; x < charPlayArea.GetLength(1); x++)
             {
-                char readChar = playSpaceList[y][x];
-                newline += readChar;
+                newline += charPlayArea[Enemy.YLoc,x].ToString();
             }
 
-            lstPlayArea.Items[y] = newline;
+            lstPlayArea.Items[Enemy.YLoc] = newline;
 
         }
     }
