@@ -14,7 +14,7 @@ namespace GrogueTheSecondOne
         List<mobEnemy> enemyList = new List<mobEnemy>();
 
         private mobEnemy playSpaceEnemy;
-       
+
         public Form1()
         {
             InitializeComponent();
@@ -52,8 +52,6 @@ namespace GrogueTheSecondOne
             }
 
             lstPlayArea.Items[y] = newline;
-
-
         }
 
         void LoadLevel(string lvl)
@@ -75,17 +73,15 @@ namespace GrogueTheSecondOne
             }
 
             //Nested loop to load level into two 2d arrays
-            for (int i = 0; i<lstPlayArea.Items.Count; i++)
+            for (int i = 0; i < lstPlayArea.Items.Count; i++)
             {
                 string line = lstPlayArea.Items[i].ToString();
                 List<char> readChars = new List<char>();
                 for (int j = 0; j < line.Length; j++)
                 {
                     charOriginalMapState[i, j] = line[j];
-                    charPlayArea[i,j] = line[j];
+                    charPlayArea[i, j] = line[j];
                 }
-                
-
             }
 
         }
@@ -111,9 +107,8 @@ namespace GrogueTheSecondOne
             //Redraw Original Map
             for (int g = 0; g < charOriginalMapState.GetLength(1); g++)
             {
-                newline += charOriginalMapState[Enemy.YLoc, g];
+                newline += charOriginalMapState[Enemy.prevYLoc, g];
             }
-            lstPlayArea.Items[Enemy.YLoc] = newline;
             lstPlayArea.Items[Enemy.prevYLoc] = newline;
 
             newline = "";
@@ -121,11 +116,9 @@ namespace GrogueTheSecondOne
             //Place string into the listbox
             for (int x = 0; x < charPlayArea.GetLength(1); x++)
             {
-                newline += charPlayArea[Enemy.YLoc,x].ToString();
+                newline += charPlayArea[Enemy.YLoc, x].ToString();
             }
-
             lstPlayArea.Items[Enemy.YLoc] = newline;
-
         }
     }
 }

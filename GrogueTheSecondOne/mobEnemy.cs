@@ -29,7 +29,7 @@ namespace GrogueTheSecondOne
         {
             prevColNum = colNum;
             prevRowNum = rowNum;
-            M.colNum += 1;
+            M.rowNum -= 1;
         }
     }
 
