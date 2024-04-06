@@ -25,7 +25,7 @@ namespace GrogueTheSecondOne
         {
             //Load Level Data From Textfile
             LoadLevel("Level_1.txt");
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 10; i++)
             {
                 int x, y;
                 
@@ -82,14 +82,14 @@ namespace GrogueTheSecondOne
         {
             foreach (mobEnemy M in enemyList)
             {
-                M.MobMoveArrManip();
+                M.MobMoveArrManip(charPlayArea);
                 UpdateEnemyRows(M);
             }
         }
 
         private void UpdateEnemyRows(mobEnemy Enemy)
         {
-            string newline = "";
+           
 
             //Change the chars stored in the playspace
             //Restore the previous tile to the environment
@@ -98,15 +98,16 @@ namespace GrogueTheSecondOne
 
             //Redraw Original Map
             //Use the GetLength method to select array dimension
+            string newline = "";
             for (int g = 0; g < charOriginalMapState.GetLength(1); g++)
             {
                 newline += charPlayArea[Enemy.prevYLoc, g];
             }
             lstPlayArea.Items[Enemy.prevYLoc] = newline;
 
-            newline = "";
             //Rebuild listbox to display the active map
             //Place string into the listbox
+            newline = "";
             for (int x = 0; x < charPlayArea.GetLength(1); x++)
             {
                 newline += charPlayArea[Enemy.YLoc, x].ToString();
