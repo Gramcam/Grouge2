@@ -5,10 +5,10 @@ namespace GrogueTheSecondOne
     public partial class Form1 : Form
     {
         //Map Fields
-        private const int PLAYSPACEROWS = 12;
-        private const int PLAYSPACECOL = 49;
+        private int PLAYSPACEROWS;
+        private int PLAYSPACECOL;
         private char[,] charOriginalMapState;
-        private char[,] charPlayArea = new char[PLAYSPACEROWS, PLAYSPACECOL];
+        private char[,] charPlayArea;
 
         private Random rnd = new Random();
 
@@ -58,20 +58,21 @@ namespace GrogueTheSecondOne
                     lstPlayArea.Items.Add(inputFile.ReadLine());
                 }
                 inputFile.Close();
-
-                charOriginalMapState = new char[lstPlayArea.Items.Count, lstPlayArea.Items[0].ToString().Length];
-            }
+                PLAYSPACEROWS = lstPlayArea.Items.Count;
+                PLAYSPACECOL = lstPlayArea.Items[0].ToString().Length;
+    }
             catch
             {
                 MessageBox.Show("Failed to retrieve level data!");
             }
+            charOriginalMapState = new char[ PLAYSPACEROWS, PLAYSPACECOL];
+            charPlayArea = new char[PLAYSPACEROWS, PLAYSPACECOL];
 
             //Nested loop to load level into two 2d arrays
-            for (int i = 0; i < lstPlayArea.Items.Count; i++)
+            for (int i = 0; i < PLAYSPACEROWS; i++)
             {
                 string line = (lstPlayArea.Items[i].ToString());
-                List<char> readChars = new List<char>();
-                for (int j = 0; j < line.Length; j++)
+                for (int j = 0; j < PLAYSPACECOL; j++)
                 {
                     charOriginalMapState[i, j] = line[j];
                     charPlayArea[i, j] = line[j];
