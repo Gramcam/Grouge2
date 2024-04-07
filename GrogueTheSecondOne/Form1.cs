@@ -31,7 +31,7 @@ namespace GrogueTheSecondOne
         {
             //Load Level Data From Textfile
             LoadLevel("Level_1.txt");
-            SpawnEnemies(5);
+            SpawnEnemies(500);
 
         }
 

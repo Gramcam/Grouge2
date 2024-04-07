@@ -88,6 +88,11 @@ namespace GrogueTheSecondOne
             return availableDirections;
         }
 
+        private void DetectPlayer(int playerY, int PlayerX)
+        {
+            
+        }
+
         public void MobMoveArrManip(char[,] mapChars)
         {
             //Store enum names in array, get the length of the array
