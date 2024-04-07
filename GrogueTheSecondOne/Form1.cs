@@ -5,8 +5,8 @@ namespace GrogueTheSecondOne
     public partial class Form1 : Form
     {
         //Map Fields
-        private int PLAYSPACEROWS;
-        private int PLAYSPACECOL;
+        private int MapYCount;
+        private int mapXCount;
         private char[,] charOriginalMapState;
         private char[,] charPlayArea;
 
@@ -25,15 +25,15 @@ namespace GrogueTheSecondOne
         {
             //Load Level Data From Textfile
             LoadLevel("Level_1.txt");
-            for (int i = 0; i < 502; i++)
+            for (int i = 0; i < 5; i++)
             {
                 int x, y;
                 
                 //Choose random location that isnt populated
                 do
                 {
-                    x = rnd.Next(1, PLAYSPACECOL - 1);
-                    y = rnd.Next(1, PLAYSPACEROWS - 1);
+                    x = rnd.Next(1, mapXCount - 1);
+                    y = rnd.Next(1, MapYCount - 1);
 
                 } while (charPlayArea[y, x] != '.');
 
@@ -58,21 +58,21 @@ namespace GrogueTheSecondOne
                     lstPlayArea.Items.Add(inputFile.ReadLine());
                 }
                 inputFile.Close();
-                PLAYSPACEROWS = lstPlayArea.Items.Count;
-                PLAYSPACECOL = lstPlayArea.Items[0].ToString().Length;
+                MapYCount = lstPlayArea.Items.Count;
+                mapXCount = lstPlayArea.Items[0].ToString().Length;
     }
             catch
             {
                 MessageBox.Show("Failed to retrieve level data!");
             }
-            charOriginalMapState = new char[ PLAYSPACEROWS, PLAYSPACECOL];
-            charPlayArea = new char[PLAYSPACEROWS, PLAYSPACECOL];
+            charOriginalMapState = new char[ MapYCount, mapXCount];
+            charPlayArea = new char[MapYCount, mapXCount];
 
             //Nested loop to load level into two 2d arrays
-            for (int i = 0; i < PLAYSPACEROWS; i++)
+            for (int i = 0; i < MapYCount; i++)
             {
                 string line = (lstPlayArea.Items[i].ToString());
-                for (int j = 0; j < PLAYSPACECOL; j++)
+                for (int j = 0; j < mapXCount; j++)
                 {
                     charOriginalMapState[i, j] = line[j];
                     charPlayArea[i, j] = line[j];
@@ -83,6 +83,7 @@ namespace GrogueTheSecondOne
 
         private void btnTestChange_Click(object sender, EventArgs e)
         {
+            enemyList.RemoveAt(0);
             foreach (mobEnemy M in enemyList)
             {
                 M.MobMoveArrManip(charPlayArea);
@@ -90,7 +91,9 @@ namespace GrogueTheSecondOne
             }
         }
 
-        private void UpdateEnemyRows(mobEnemy Enemy)
+
+
+        private void UpdateEnemyRows(mobEnemy Enemy, int x, int y)
         {
            
             //Change the chars stored in the playspace
