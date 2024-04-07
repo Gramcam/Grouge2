@@ -37,11 +37,6 @@ namespace GrogueTheSecondOne
             { 1, 1 } // SE
         };
 
-        public enum mobSprites
-        {
-            dead = '.',
-            alive = 'N'
-        }
 
         public int XLoc { get { return colNum; } }
         public int YLoc { get { return rowNum; } }
@@ -51,7 +46,7 @@ namespace GrogueTheSecondOne
 
         public mobEnemy(int row, int col)
         {
-            asciiSprite = (char)mobSprites.alive;
+            asciiSprite = (char)Form1.mobSprites.alive;
             rowNum = row;
             colNum = col;
         }
@@ -88,17 +83,58 @@ namespace GrogueTheSecondOne
             return availableDirections;
         }
 
-        private void DetectPlayer(int playerY, int PlayerX)
+        public List<direction> DetectPlayer(Player playerCharacter)
         {
-            
+            List<direction> optimalDirections = new List<direction>();
+            //If negative enemy needs to move north
+            if (playerCharacter.YLoc - rowNum < 0)
+            {
+                for (int i = 1; i <= 3; i++)
+                {
+                    optimalDirections.Add((direction)i);
+                }
+            }
+            else if (playerCharacter.YLoc - rowNum > 0)
+            {
+                for (int i = 6; i <= 8; i++)
+                {
+                    optimalDirections.Add((direction)i);
+                }
+            }
+            else
+            {
+                for (int i = 4; i <= 5; i++)
+                    optimalDirections.Add((direction)i);
+            }
+            //Check for the x direction
+            //Remove counter directions from optimal directions
+            if (playerCharacter.XLoc - colNum < 0 )
+            {
+                optimalDirections.Remove(direction.E);
+                optimalDirections.Remove(direction.NE);
+                optimalDirections.Remove(direction.SE);
+            }
+            else if (playerCharacter.XLoc - colNum > 0)
+            {
+                optimalDirections.Remove(direction.W);
+                optimalDirections.Remove(direction.NW);
+                optimalDirections.Remove(direction.SW);
+            }
+            else
+            {
+                optimalDirections.Remove(direction.N);
+                optimalDirections.Remove(direction.S);
+            }
+            return optimalDirections;
         }
 
-        public void MobMoveArrManip(char[,] mapChars)
+        public void MobMoveArrManip(char[,] mapChars, List<direction> availableDirecitons)
         {
             //Store enum names in array, get the length of the array
             //int enumCount = Enum.GetNames(typeof(direction)).Length;
-            
-            List<direction> availableDirections = GetAvailableDirections(mapChars);
+
+            //List<direction> availableDirections = GetAvailableDirections(mapChars);
+            List<direction> availableDirections = availableDirecitons;
             if (availableDirections.Count >= 1) { 
             
                 //Random to select direction from availabledirections
@@ -176,7 +212,7 @@ namespace GrogueTheSecondOne
         }
         public void Die()
         {
-            asciiSprite = (char)mobSprites.dead;
+            asciiSprite = (char)Form1.mobSprites.dead;
         }
 
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static GrogueTheSecondOne.mobEnemy;
 
 namespace GrogueTheSecondOne
 {
@@ -18,8 +19,17 @@ namespace GrogueTheSecondOne
         public int prevXLoc { get { return prevColNum; } }
         public int prevYLoc { get { return prevRowNum; } }
         public char Sprite { get { return asciiSprite; } }
+
+        public Player(int row, int col)
+        {
+            asciiSprite = (char)Form1.mobSprites.alivePlayer;
+            rowNum = row;
+            colNum = col;
+        }
+
         private enum direction
         { 
         }
+
     }
 }

@@ -16,10 +16,18 @@ namespace GrogueTheSecondOne
         List<mobEnemy> enemyList = new List<mobEnemy>();
         private mobEnemy playSpaceEnemy;
 
+        private Player playerCharacter;
+
         public enum asciiTiles
         {
             empty = '.',
             wall = '#',
+        }
+        public enum mobSprites
+        {
+            dead = '.',
+            alive = 'N',
+            alivePlayer = '@'
         }
 
         public Form1()
@@ -31,7 +39,9 @@ namespace GrogueTheSecondOne
         {
             //Load Level Data From Textfile
             LoadLevel("Level_1.txt");
-            SpawnEnemies(500);
+            SpawnEnemies(50);
+            playerCharacter = new Player(1, 1);
+            UpdateEnemyRows(playerCharacter.Sprite, playerCharacter.YLoc, playerCharacter.XLoc, playerCharacter.prevYLoc, playerCharacter.prevXLoc);
 
         }
 
@@ -94,11 +104,11 @@ namespace GrogueTheSecondOne
 
         private void btnTestChange_Click(object sender, EventArgs e)
         {
-            RemoveEnemyMob(enemyList[rnd.Next(0, enemyList.Count())]);
+            //RemoveEnemyMob(enemyList[rnd.Next(0, enemyList.Count())]);
 
             foreach (mobEnemy N in enemyList)
             {
-                N.MobMoveArrManip(charPlayArea);
+                N.MobMoveArrManip(charPlayArea, playSpaceEnemy.DetectPlayer(playerCharacter));
                 UpdateEnemyRows(N.Sprite, N.YLoc, N.XLoc, N.prevYLoc, N.prevXLoc);
             }
         }
