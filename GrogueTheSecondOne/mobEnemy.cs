@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
@@ -12,7 +13,7 @@ namespace GrogueTheSecondOne
         private char asciiSprite;
         private int rowNum, colNum;
         private int prevRowNum, prevColNum;
-       private Random rnd = new Random();
+        private Random rnd = new Random();
 
         //Movement Enums for 9 directions
         public enum direction
@@ -23,7 +24,7 @@ namespace GrogueTheSecondOne
         }
         private direction chosenDir;
 
-        int[,] directionManipulations = new int[,]
+        private int[,] directionManipulations = new int[,]
         {
             {0, 0 }, //H
             { -1, -1}, //NW
@@ -36,15 +37,21 @@ namespace GrogueTheSecondOne
             { 1, 1 } // SE
         };
 
-        public int Xloc { get { return colNum; } }
+        public enum mobSprites
+        {
+            dead = '.',
+            alive = 'N'
+        }
+
+        public int XLoc { get { return colNum; } }
         public int YLoc { get { return rowNum; } }
-        public int prevXloc { get { return prevColNum; } }
+        public int prevXLoc { get { return prevColNum; } }
         public int prevYLoc { get { return prevRowNum; } }
         public char Sprite { get { return asciiSprite; } }
 
         public mobEnemy(int row, int col)
         {
-            asciiSprite = 'N';
+            asciiSprite = (char)mobSprites.alive;
             rowNum = row;
             colNum = col;
         }
@@ -105,6 +112,8 @@ namespace GrogueTheSecondOne
                 colNum += manipulationOperators[1];
             }
 
+          
+
             //switch (chosenDir)
             //{
             //    case direction.NW:
@@ -160,7 +169,10 @@ namespace GrogueTheSecondOne
 
 
         }
-
+        public void Die()
+        {
+            asciiSprite = (char)mobSprites.dead;
+        }
 
     }
 }

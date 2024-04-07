@@ -1,4 +1,4 @@
-using System.Xml;
+using System;
 
 namespace GrogueTheSecondOne
 {
@@ -16,6 +16,12 @@ namespace GrogueTheSecondOne
         List<mobEnemy> enemyList = new List<mobEnemy>();
         private mobEnemy playSpaceEnemy;
 
+        public enum asciiTiles
+        {
+            empty = '.',
+            wall = '#',
+        }
+
         public Form1()
         {
             InitializeComponent();
@@ -25,24 +31,7 @@ namespace GrogueTheSecondOne
         {
             //Load Level Data From Textfile
             LoadLevel("Level_1.txt");
-            for (int i = 0; i < 5; i++)
-            {
-                int x, y;
-                
-                //Choose random location that isnt populated
-                do
-                {
-                    x = rnd.Next(1, mapXCount - 1);
-                    y = rnd.Next(1, MapYCount - 1);
-
-                } while (charPlayArea[y, x] != '.');
-
-                playSpaceEnemy = new mobEnemy(y, x);
-
-                enemyList.Add(playSpaceEnemy);
-            }
-            foreach (mobEnemy mob in enemyList)
-                UpdateEnemyRows(mob);
+            SpawnEnemies(5);
 
         }
 
@@ -81,43 +70,71 @@ namespace GrogueTheSecondOne
 
         }
 
+        private void SpawnEnemies(int quantity)
+        {
+            for (int i = 0; i < quantity; i++)
+            {
+                int x, y;
+
+                //Choose random location that isnt populated
+                do
+                {
+                    x = rnd.Next(1, mapXCount - 1);
+                    y = rnd.Next(1, MapYCount - 1);
+
+                } while (charPlayArea[y, x] != (char)asciiTiles.empty);
+
+                playSpaceEnemy = new mobEnemy(y, x);
+
+                enemyList.Add(playSpaceEnemy);
+            }
+            foreach (mobEnemy N in enemyList)
+                UpdateEnemyRows(N.Sprite, N.YLoc, N.XLoc, N.prevYLoc, N.prevXLoc);
+        }
+
         private void btnTestChange_Click(object sender, EventArgs e)
         {
-            enemyList.RemoveAt(0);
-            foreach (mobEnemy M in enemyList)
+            RemoveEnemyMob(enemyList[rnd.Next(0, enemyList.Count())]);
+
+            foreach (mobEnemy N in enemyList)
             {
-                M.MobMoveArrManip(charPlayArea);
-                UpdateEnemyRows(M);
+                N.MobMoveArrManip(charPlayArea);
+                UpdateEnemyRows(N.Sprite, N.YLoc, N.XLoc, N.prevYLoc, N.prevXLoc);
             }
         }
 
+       private void RemoveEnemyMob(mobEnemy N)
+        {
+            N.Die();
+            UpdateEnemyRows(N.Sprite, N.YLoc, N.XLoc, N.prevYLoc, N.prevXLoc);
+            enemyList.RemoveAt(enemyList.IndexOf(N));
+        }
 
-
-        private void UpdateEnemyRows(mobEnemy Enemy, int x, int y)
+        private void UpdateEnemyRows(char sprite, int YLoc, int XLoc, int prevYLoc, int prevXLoc )
         {
            
             //Change the chars stored in the playspace
             //Restore the previous tile to the environment
-            charPlayArea[Enemy.YLoc, Enemy.Xloc] = Enemy.Sprite;
-            charPlayArea[Enemy.prevYLoc, Enemy.prevXloc] = charOriginalMapState[Enemy.prevYLoc, Enemy.prevXloc];
+            charPlayArea[YLoc, XLoc] = sprite;
+            charPlayArea[prevYLoc, prevXLoc] = charOriginalMapState[prevYLoc, prevXLoc];
 
             //Redraw Original Map
             //Use the GetLength method to select array dimension
             string newline = "";
             for (int g = 0; g < charOriginalMapState.GetLength(1); g++)
             {
-                newline += charPlayArea[Enemy.prevYLoc, g];
+                newline += charPlayArea[prevYLoc, g];
             }
-            lstPlayArea.Items[Enemy.prevYLoc] = newline;
+            lstPlayArea.Items[prevYLoc] = newline;
 
             //Rebuild listbox to display the active map
             //Place string into the listbox
             newline = "";
             for (int x = 0; x < charPlayArea.GetLength(1); x++)
             {
-                newline += charPlayArea[Enemy.YLoc, x].ToString();
+                newline += charPlayArea[YLoc, x].ToString();
             }
-            lstPlayArea.Items[Enemy.YLoc] = newline;
+            lstPlayArea.Items[YLoc] = newline;
         }
     }
 }
