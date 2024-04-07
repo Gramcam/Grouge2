@@ -128,30 +128,37 @@ namespace GrogueTheSecondOne
             return optimalDirections;
         }
 
-        public void MobMoveArrManip(char[,] mapChars, List<direction> availableDirecitons)
+        public void MobMoveArrManip(char[,] mapChars, Player playerCharacter)
         {
-            //Store enum names in array, get the length of the array
-            //int enumCount = Enum.GetNames(typeof(direction)).Length;
+            List<direction> advantageMove = new List<direction>();
+            List<direction> availableDirections = GetAvailableDirections(mapChars);
+            advantageMove = availableDirections.Intersect(DetectPlayer(playerCharacter)).ToList();
+            //List<direction> availableDirections = availableDirecitons;
+            if (advantageMove.Count >= 1)
+            {
 
-            //List<direction> availableDirections = GetAvailableDirections(mapChars);
-            List<direction> availableDirections = availableDirecitons;
-            if (availableDirections.Count >= 1) { 
-            
                 //Random to select direction from availabledirections
-                int pickedDir = rnd.Next(0, availableDirections.Count);
-                chosenDir = availableDirections[pickedDir];
-                
-                //Get the manipulation values from the 2d direction array
-                int[] manipulationOperators = new int[2];
+                int pickedDir = rnd.Next(0, advantageMove.Count);
+                chosenDir = advantageMove[pickedDir];
+            }
+            else if (availableDirections.Count >= 1)
+            {
+                chosenDir = availableDirections[rnd.Next(0, availableDirections.Count)];
+            }
+
+            //Get the manipulation values from the 2d direction array
+            int[] manipulationOperators = new int[2];
                 manipulationOperators[0] = directionManipulations[(int)chosenDir, 0];
                 manipulationOperators[1] = directionManipulations[(int)chosenDir, 1];
            
                 //Apply the changes
                 prevColNum = colNum;
                 prevRowNum = rowNum;
+
                 rowNum += manipulationOperators[0];
                 colNum += manipulationOperators[1];
             }
+
 
           
 
@@ -209,7 +216,7 @@ namespace GrogueTheSecondOne
             //}
 
 
-        }
+        
         public void Die()
         {
             asciiSprite = (char)Form1.mobSprites.dead;

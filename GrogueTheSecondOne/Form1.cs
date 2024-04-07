@@ -39,7 +39,7 @@ namespace GrogueTheSecondOne
         {
             //Load Level Data From Textfile
             LoadLevel("Level_1.txt");
-            SpawnEnemies(50);
+            SpawnEnemies(9);
             playerCharacter = new Player(1, 1);
             UpdateEnemyRows(playerCharacter.Sprite, playerCharacter.YLoc, playerCharacter.XLoc, playerCharacter.prevYLoc, playerCharacter.prevXLoc);
 
@@ -108,7 +108,7 @@ namespace GrogueTheSecondOne
 
             foreach (mobEnemy N in enemyList)
             {
-                N.MobMoveArrManip(charPlayArea, playSpaceEnemy.DetectPlayer(playerCharacter));
+                N.MobMoveArrManip(charPlayArea, playerCharacter);
                 UpdateEnemyRows(N.Sprite, N.YLoc, N.XLoc, N.prevYLoc, N.prevXLoc);
             }
         }
