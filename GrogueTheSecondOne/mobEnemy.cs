@@ -12,18 +12,20 @@ namespace GrogueTheSecondOne
         private char asciiSprite;
         private int rowNum, colNum;
         private int prevRowNum, prevColNum;
+       private Random rnd = new Random();
 
         //Movement Enums for 9 directions
         public enum direction
         {
-            NW, N, NE,
-            W, E,
-            SW, S, SE, H
+            H, NW, N, NE,
+               W,      E,
+               SW, S, SE
         }
         private direction chosenDir;
 
         int[,] directionManipulations = new int[,]
         {
+            {0, 0 }, //H
             { -1, -1}, //NW
             { -1, 0 }, //N
             { -1, 1 }, // NE
@@ -59,7 +61,8 @@ namespace GrogueTheSecondOne
             List<direction> availableDirections = new List<direction>();
             
             //use a loop to check each possible direction 
-            for (int i = 0; i < directionManipulations.GetLength(0); i++)
+            //Start at 1 to avoid checking current position
+            for (int i = 1; i < directionManipulations.GetLength(0); i++)
             {
                 //looping through directionmanipulation arrays. Array i, index 0 and 1.
                 int rowChange = directionManipulations[i, 0];
@@ -82,12 +85,9 @@ namespace GrogueTheSecondOne
         {
             //Store enum names in array, get the length of the array
             //int enumCount = Enum.GetNames(typeof(direction)).Length;
-            Random rnd = new Random();
-
-            chosenDir = (direction)rnd.Next(0, 9);
-
+            
             List<direction> availableDirections = GetAvailableDirections(mapChars);
-            if (availableDirections.Count > 1) { 
+            if (availableDirections.Count >= 1) { 
             
                 //Random to select direction from availabledirections
                 int pickedDir = rnd.Next(0, availableDirections.Count);

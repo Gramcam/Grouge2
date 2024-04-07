@@ -7,7 +7,7 @@ namespace GrogueTheSecondOne
         //Map Fields
         private const int PLAYSPACEROWS = 12;
         private const int PLAYSPACECOL = 49;
-        private char[,] charOriginalMapState = new char[PLAYSPACEROWS, PLAYSPACECOL];
+        private char[,] charOriginalMapState;
         private char[,] charPlayArea = new char[PLAYSPACEROWS, PLAYSPACECOL];
 
         private Random rnd = new Random();
@@ -25,7 +25,7 @@ namespace GrogueTheSecondOne
         {
             //Load Level Data From Textfile
             LoadLevel("Level_1.txt");
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 502; i++)
             {
                 int x, y;
                 
@@ -41,14 +41,14 @@ namespace GrogueTheSecondOne
 
                 enemyList.Add(playSpaceEnemy);
             }
-
             foreach (mobEnemy mob in enemyList)
                 UpdateEnemyRows(mob);
+
         }
 
         private void LoadLevel(string lvl)
         {
-            //Load from textfile
+            //Load from textfile and initialize the map arrays
             try
             {
                 StreamReader inputFile = File.OpenText(lvl);
@@ -58,6 +58,8 @@ namespace GrogueTheSecondOne
                     lstPlayArea.Items.Add(inputFile.ReadLine());
                 }
                 inputFile.Close();
+
+                charOriginalMapState = new char[lstPlayArea.Items.Count, lstPlayArea.Items[0].ToString().Length];
             }
             catch
             {
@@ -67,7 +69,7 @@ namespace GrogueTheSecondOne
             //Nested loop to load level into two 2d arrays
             for (int i = 0; i < lstPlayArea.Items.Count; i++)
             {
-                string line = lstPlayArea.Items[i].ToString();
+                string line = (lstPlayArea.Items[i].ToString());
                 List<char> readChars = new List<char>();
                 for (int j = 0; j < line.Length; j++)
                 {
@@ -90,7 +92,6 @@ namespace GrogueTheSecondOne
         private void UpdateEnemyRows(mobEnemy Enemy)
         {
            
-
             //Change the chars stored in the playspace
             //Restore the previous tile to the environment
             charPlayArea[Enemy.YLoc, Enemy.Xloc] = Enemy.Sprite;
