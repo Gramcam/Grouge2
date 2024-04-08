@@ -13,6 +13,7 @@ namespace GrogueTheSecondOne
         private int rowNum, colNum;
         private int prevRowNum, prevColNum;
         private Random rnd = new Random();
+        public int playerHealth = 3;
         //Movement Enums for 9 directions
         private enum direction
         {
@@ -39,14 +40,13 @@ namespace GrogueTheSecondOne
         public int prevXLoc { get { return prevColNum; } }
         public int prevYLoc { get { return prevRowNum; } }
         public char Sprite { get { return asciiSprite; } }
-
         public Player(int row, int col)
         {
             asciiSprite = (char)Form1.asciiTiles.alivePlayer;
             rowNum = row;
             colNum = col;
         }
-        public void moveUp(char[,] mapArr, int directionIndex)
+        public void playerMove(char[,] mapArr, int directionIndex)
         {
             prevColNum = colNum;
             prevRowNum = rowNum;
@@ -61,7 +61,7 @@ namespace GrogueTheSecondOne
             int checkRow = rowNum + rowChange;
             int checkCol = colNum + colChange;
 
-            if (mapArr[checkRow, checkCol] == (char)Form1.asciiTiles.wall)
+            if (mapArr[checkRow, checkCol] == (char)Form1.asciiTiles.wall || mapArr[checkRow, checkCol] == (char)Form1.asciiTiles.aliveEnemy)
             {
                 rowNum = prevRowNum;
                 colNum = prevColNum;

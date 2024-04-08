@@ -13,14 +13,15 @@ namespace GrogueTheSecondOne
         private char asciiSprite;
         private int rowNum, colNum;
         private int prevRowNum, prevColNum;
+        private bool shouldDie;
         private Random rnd = new Random();
 
         //Movement Enums for 9 directions
         private enum direction
         {
             H, NW, N, NE,
-               W,      E,
-               SW, S, SE
+            W, E,
+            SW, S, SE
         }
         private direction chosenDir;
 
@@ -43,6 +44,7 @@ namespace GrogueTheSecondOne
         public int prevXLoc { get { return prevColNum; } }
         public int prevYLoc { get { return prevRowNum; } }
         public char Sprite { get { return asciiSprite; } }
+        public bool removeState { get { return shouldDie; } }
 
         public mobEnemy(int row, int col)
         {
@@ -61,7 +63,7 @@ namespace GrogueTheSecondOne
         private List<direction> GetAvailableDirections(char[,] mapChars)
         {
             List<direction> availableDirections = new List<direction>();
-            
+
             //use a loop to check each possible direction 
             //Start at 1 to avoid checking current position
             for (int i = 0; i < directionManipulations.GetLength(0); i++)
@@ -74,7 +76,7 @@ namespace GrogueTheSecondOne
                 int checkRow = rowNum + rowChange;
                 int checkCol = colNum + colChange;
 
-                if (mapChars[checkRow, checkCol] != (char)Form1.asciiTiles.wall && mapChars[checkRow, checkCol] != (char)Form1.asciiTiles.aliveEnemy && mapChars[checkRow, checkCol] != (char)Form1.asciiTiles.alivePlayer)
+                if (mapChars[checkRow, checkCol] != (char)Form1.asciiTiles.wall && mapChars[checkRow, checkCol] != (char)Form1.asciiTiles.aliveEnemy) /*&& mapChars[checkRow, checkCol] != (char)Form1.asciiTiles.alivePlayer)*/
                 {
                     availableDirections.Add((direction)i);
                 }
@@ -83,7 +85,7 @@ namespace GrogueTheSecondOne
             return availableDirections;
         }
 
-        
+
 
         private List<direction> BasicPathing(Player playerCharacter)
         {
@@ -111,7 +113,7 @@ namespace GrogueTheSecondOne
             }
             //Check for the x direction
             //Remove counter directions from optimal directions
-            if (playerCharacter.XLoc - colNum < 0 )
+            if (playerCharacter.XLoc - colNum < 0)
             {
                 optimalDirections.Remove(direction.E);
                 optimalDirections.Remove(direction.NE);
@@ -145,20 +147,20 @@ namespace GrogueTheSecondOne
         {
             List<direction> availableDirections = GetAvailableDirections(mapChars);
 
-           if ( DetectionRadius(playerCharacter, 6)) 
-           {
-            List<direction> advantageMove = new List<direction>();
-            List<direction> pathedmoves = BasicPathing(playerCharacter).ToList();
-            advantageMove = availableDirections.Intersect(pathedmoves).ToList();
-
-            if (advantageMove.Count >= 1)
+            if (DetectionRadius(playerCharacter, 2))
             {
-                //Random to select direction from availabledirections
-                int pickedDir = rnd.Next(0, advantageMove.Count);
+                List<direction> advantageMove = new List<direction>();
+                List<direction> pathedmoves = BasicPathing(playerCharacter).ToList();
+                advantageMove = availableDirections.Intersect(pathedmoves).ToList();
 
-                chosenDir = advantageMove[pickedDir];
+                if (advantageMove.Count >= 1)
+                {
+                    //Random to select direction from availabledirections
+                    int pickedDir = rnd.Next(0, advantageMove.Count);
+
+                    chosenDir = advantageMove[pickedDir];
+                }
             }
-           }
             else if (availableDirections.Count >= 1)
             {
                 chosenDir = availableDirections[rnd.Next(0, availableDirections.Count)];
@@ -168,7 +170,7 @@ namespace GrogueTheSecondOne
             int[] manipulationOperators = new int[2];
             manipulationOperators[0] = directionManipulations[(int)chosenDir, 0];
             manipulationOperators[1] = directionManipulations[(int)chosenDir, 1];
-           
+
             //Apply the changes
             prevColNum = colNum;
             prevRowNum = rowNum;
@@ -182,68 +184,33 @@ namespace GrogueTheSecondOne
             }
         }
 
-
-          
-
-            //switch (chosenDir)
-            //{
-            //    case direction.NW:
-            //        prevColNum = colNum;
-            //        prevRowNum = rowNum;
-            //        rowNum--;
-            //        colNum--;
-            //        break;
-            //    case direction.N:
-            //        prevColNum = colNum;
-            //        prevRowNum = rowNum;
-            //        rowNum--;
-            //        break;
-            //    case direction.NE:
-            //        prevColNum = colNum;
-            //        prevRowNum = rowNum;
-            //        rowNum--;
-            //        colNum++;
-            //        break;
-            //    case direction.W:
-            //        prevColNum = colNum;
-            //        prevRowNum = rowNum;
-            //        colNum--;
-            //        break;
-            //    case direction.H:
-            //        break;
-            //    case direction.E:
-            //        prevColNum = colNum;
-            //        prevRowNum = rowNum;
-            //        colNum++;
-            //        break;
-            //    case direction.SW:
-            //        prevColNum = colNum;
-            //        prevRowNum = rowNum;
-            //        rowNum++;
-            //        colNum--;
-            //        break;
-            //    case direction.S:
-            //        prevColNum = colNum;
-            //        prevRowNum = rowNum;
-            //        rowNum++;
-            //        break;
-            //    case direction.SE:
-            //        prevColNum = colNum;
-            //        prevRowNum = rowNum;
-            //        rowNum--;
-            //        colNum++;
-
-            //        break;
-            //    default:
-            //        break;
-            //}
-
-
-        
-        public void Die()
+        public void AttackPlayer(Player playerCharacter, List<mobEnemy> mobEnemies)
         {
-            asciiSprite = (char)Form1.mobSprites.dead;
+            int playerXDiff, playerYDiff;
+            playerXDiff = playerCharacter.XLoc - colNum;
+            playerYDiff = playerCharacter.YLoc - rowNum;
+            //if ((playerXDiff <= 1 || playerXDiff <= -1) && (playerYDiff <= 1 || playerYDiff <= -1))
+            if (playerXDiff == 0 && playerYDiff == 0)
+            {
+
+                playerCharacter.playerHealth--;
+                Die(mobEnemies);
+            }
+
         }
 
+        
+        public void Die(List<mobEnemy> mobEnemies)
+        {
+            asciiSprite = (char)Form1.asciiTiles.empty;
+            shouldDie = true;
+        }
+
+        //private void RemoveEnemyMob(mobEnemy N)
+        //{
+        //    N.Die();
+        //    UpdateEnemyRows(N.Sprite, N.YLoc, N.XLoc, N.prevYLoc, N.prevXLoc);
+        //    enemyList.RemoveAt(enemyList.IndexOf(N));
+        //}
     }
 }

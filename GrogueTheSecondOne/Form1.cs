@@ -27,23 +27,20 @@ namespace GrogueTheSecondOne
         }
         public enum mobSprites
         {
-            dead = '.',
+            
         }
-
-
 
         public Form1()
         {
             InitializeComponent();
-            this.KeyPreview = true; // Enable KeyPreview for the form
-
+            this.KeyPreview = true;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             //Load Level Data From Textfile
             LoadLevel("Level_1.txt");
-            SpawnEnemies(3);
+            SpawnEnemies(10);
             playerCharacter = new Player(10, 46);
             UpdateEnemyRows(playerCharacter.Sprite, playerCharacter.YLoc, playerCharacter.XLoc, playerCharacter.prevYLoc, playerCharacter.prevXLoc);
             this.Focus();
@@ -54,13 +51,8 @@ namespace GrogueTheSecondOne
         private void btnTestChange_Click(object sender, EventArgs e)
         {
             //RemoveEnemyMob(enemyList[rnd.Next(0, enemyList.Count())]);
-            playerCharacter.moveUp(charPlayArea, 2);
-            UpdateEnemyRows(playerCharacter.Sprite, playerCharacter.YLoc, playerCharacter.XLoc, playerCharacter.prevYLoc, playerCharacter.prevXLoc);
-            foreach (mobEnemy N in enemyList)
-            {
-                N.MobMoveArrManip(charPlayArea, playerCharacter);
-                UpdateEnemyRows(N.Sprite, N.YLoc, N.XLoc, N.prevYLoc, N.prevXLoc);
-            }
+            playerCharacter.playerMove(charPlayArea, 2);
+            TurnEndBehaviour();
 
         }
 
@@ -120,12 +112,7 @@ namespace GrogueTheSecondOne
                 UpdateEnemyRows(N.Sprite, N.YLoc, N.XLoc, N.prevYLoc, N.prevXLoc);
         }
 
-        private void RemoveEnemyMob(mobEnemy N)
-        {
-            N.Die();
-            UpdateEnemyRows(N.Sprite, N.YLoc, N.XLoc, N.prevYLoc, N.prevXLoc);
-            enemyList.RemoveAt(enemyList.IndexOf(N));
-        }
+
 
         private void UpdateEnemyRows(char sprite, int YLoc, int XLoc, int prevYLoc, int prevXLoc)
         {
@@ -153,28 +140,51 @@ namespace GrogueTheSecondOne
             }
             lstPlayArea.Items[YLoc] = newline;
         }
-
+        private void TurnEndBehaviour()
+        {
+            UpdateEnemyRows(playerCharacter.Sprite, playerCharacter.YLoc, playerCharacter.XLoc, playerCharacter.prevYLoc, playerCharacter.prevXLoc);
+            List<mobEnemy> enemiesToRemove = new List<mobEnemy>();
+            foreach (mobEnemy N in enemyList)
+            {
+                N.MobMoveArrManip(charPlayArea, playerCharacter);
+                UpdateEnemyRows(N.Sprite, N.YLoc, N.XLoc, N.prevYLoc, N.prevXLoc);
+            }
+            foreach (mobEnemy N in enemyList)
+            {
+                N.AttackPlayer(playerCharacter, enemyList);
+                if (N.removeState)
+                {
+                    // Add the enemy that collided with the player to the removal list
+                    enemiesToRemove.Add(N);
+                }
+            }
+            foreach (mobEnemy N in enemiesToRemove)
+            {
+                enemyList.Remove(N); // Safely remove enemies
+                UpdateEnemyRows(N.Sprite, N.YLoc, N.XLoc, N.prevYLoc, N.prevXLoc);
+            }
+        }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.NumPad5)
-                playerCharacter.moveUp(charPlayArea, 0);
+                playerCharacter.playerMove(charPlayArea, 0);
             if (e.KeyCode == Keys.NumPad7)
-                playerCharacter.moveUp(charPlayArea, 1);
+                playerCharacter.playerMove(charPlayArea, 1);
             if (e.KeyCode == Keys.NumPad8)
-                playerCharacter.moveUp(charPlayArea, 2);
+                playerCharacter.playerMove(charPlayArea, 2);
             if (e.KeyCode == Keys.NumPad9)
-                playerCharacter.moveUp(charPlayArea, 3);
+                playerCharacter.playerMove(charPlayArea, 3);
             if (e.KeyCode == Keys.NumPad4)
-                playerCharacter.moveUp(charPlayArea, 4);
+                playerCharacter.playerMove(charPlayArea, 4);
             if (e.KeyCode == Keys.NumPad6)
-                playerCharacter.moveUp(charPlayArea, 5);
+                playerCharacter.playerMove(charPlayArea, 5);
             if (e.KeyCode == Keys.NumPad1)
-                playerCharacter.moveUp(charPlayArea, 6);
+                playerCharacter.playerMove(charPlayArea, 6);
             if (e.KeyCode == Keys.NumPad2)
-                playerCharacter.moveUp(charPlayArea, 7);
+                playerCharacter.playerMove(charPlayArea, 7);
             if (e.KeyCode == Keys.NumPad3)
-                playerCharacter.moveUp(charPlayArea, 8);
-            UpdateEnemyRows(playerCharacter.Sprite, playerCharacter.YLoc, playerCharacter.XLoc, playerCharacter.prevYLoc, playerCharacter.prevXLoc);
+                playerCharacter.playerMove(charPlayArea, 8);
+            TurnEndBehaviour();
         }
     }
 }
