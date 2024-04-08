@@ -206,11 +206,5 @@ namespace GrogueTheSecondOne
             shouldDie = true;
         }
 
-        //private void RemoveEnemyMob(mobEnemy N)
-        //{
-        //    N.Die();
-        //    UpdateEnemyRows(N.Sprite, N.YLoc, N.XLoc, N.prevYLoc, N.prevXLoc);
-        //    enemyList.RemoveAt(enemyList.IndexOf(N));
-        //}
     }
 }

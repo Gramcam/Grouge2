@@ -33,6 +33,7 @@ namespace GrogueTheSecondOne
         {
             InitializeComponent();
             this.KeyPreview = true;
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
         }
 
         private void Form1_Load(object sender, EventArgs e)
