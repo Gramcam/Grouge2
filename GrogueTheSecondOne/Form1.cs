@@ -213,6 +213,7 @@ namespace GrogueTheSecondOne
             {
                 N.MobMoveArrManip(charPlayArea, playerCharacter);
                 UpdateEnemyRows(N.Sprite, N.YLoc, N.XLoc, N.prevYLoc, N.prevXLoc);
+                DrawChangedMap(N.Sprite, N.YLoc, N.XLoc);//add back enemy if it is on a previous enemy location
             }
             foreach (mobEnemy N in enemyList)
             {

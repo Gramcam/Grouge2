@@ -170,12 +170,26 @@ namespace GrogueTheSecondOne
             int[] manipulationOperators = new int[2];
             manipulationOperators[0] = directionManipulations[(int)chosenDir, 0];
             manipulationOperators[1] = directionManipulations[(int)chosenDir, 1];
-
+           
             //Apply the changes
             prevColNum = colNum;
             prevRowNum = rowNum;
             rowNum += manipulationOperators[0];
             colNum += manipulationOperators[1];
+            if (mapChars[rowNum, colNum] == (char)Form1.asciiTiles.wall)
+            {
+                //reset the row and col
+                rowNum = prevRowNum;
+                colNum = prevColNum;
+                chosenDir = availableDirections[rnd.Next(0, availableDirections.Count)];
+                manipulationOperators[0] = directionManipulations[(int)chosenDir, 0];
+                manipulationOperators[1] = directionManipulations[(int)chosenDir, 1];
+                prevColNum = colNum;
+                prevRowNum = rowNum;
+                rowNum += manipulationOperators[0];
+                colNum += manipulationOperators[1];
+
+            }
             // Check if the new position is within the screen boundaries, rest. Bug Fix
             if (rowNum <= 0 || rowNum >= mapChars.GetLength(0) - 1 || colNum <= 0 || colNum >= mapChars.GetLength(1) - 1)
             {
