@@ -22,12 +22,12 @@ namespace GrogueTheSecondOne
         {
             empty = '.',
             wall = '#',
-            alivePlayer = '@'
+            alivePlayer = '@',
+            aliveEnemy = 'N'
         }
         public enum mobSprites
         {
             dead = '.',
-            alive = 'N',
         }
         
 
@@ -40,7 +40,7 @@ namespace GrogueTheSecondOne
         {
             //Load Level Data From Textfile
             LoadLevel("Level_1.txt");
-            SpawnEnemies(59);
+            SpawnEnemies(3);
             playerCharacter = new Player(10, 46);
             UpdateEnemyRows(playerCharacter.Sprite, playerCharacter.YLoc, playerCharacter.XLoc, playerCharacter.prevYLoc, playerCharacter.prevXLoc);
 
@@ -50,12 +50,14 @@ namespace GrogueTheSecondOne
         private void btnTestChange_Click(object sender, EventArgs e)
         {
             //RemoveEnemyMob(enemyList[rnd.Next(0, enemyList.Count())]);
-
+            playerCharacter.moveUp(charPlayArea, 2);
+            UpdateEnemyRows(playerCharacter.Sprite, playerCharacter.YLoc, playerCharacter.XLoc, playerCharacter.prevYLoc, playerCharacter.prevXLoc);
             foreach (mobEnemy N in enemyList)
             {
                 N.MobMoveArrManip(charPlayArea, playerCharacter);
                 UpdateEnemyRows(N.Sprite, N.YLoc, N.XLoc, N.prevYLoc, N.prevXLoc);
             }
+
         }
 
         private void LoadLevel(string lvl)
@@ -126,8 +128,8 @@ namespace GrogueTheSecondOne
            
             //Change the chars stored in the playspace
             //Restore the previous tile to the environment
-            charPlayArea[YLoc, XLoc] = sprite;
             charPlayArea[prevYLoc, prevXLoc] = charOriginalMapState[prevYLoc, prevXLoc];
+            charPlayArea[YLoc, XLoc] = sprite;
 
             //Redraw Original Map
             //Use the GetLength method to select array dimension

@@ -16,7 +16,7 @@ namespace GrogueTheSecondOne
         private Random rnd = new Random();
 
         //Movement Enums for 9 directions
-        public enum direction
+        private enum direction
         {
             H, NW, N, NE,
                W,      E,
@@ -46,7 +46,7 @@ namespace GrogueTheSecondOne
 
         public mobEnemy(int row, int col)
         {
-            asciiSprite = (char)Form1.mobSprites.alive;
+            asciiSprite = (char)Form1.asciiTiles.aliveEnemy;
             rowNum = row;
             colNum = col;
         }
@@ -58,13 +58,13 @@ namespace GrogueTheSecondOne
             M.rowNum -= 1;
         }
 
-        public List<direction> GetAvailableDirections(char[,] mapChars)
+        private List<direction> GetAvailableDirections(char[,] mapChars)
         {
             List<direction> availableDirections = new List<direction>();
             
             //use a loop to check each possible direction 
             //Start at 1 to avoid checking current position
-            for (int i = 1; i < directionManipulations.GetLength(0); i++)
+            for (int i = 0; i < directionManipulations.GetLength(0); i++)
             {
                 //looping through directionmanipulation arrays. Array i, index 0 and 1.
                 int rowChange = directionManipulations[i, 0];
@@ -74,16 +74,18 @@ namespace GrogueTheSecondOne
                 int checkRow = rowNum + rowChange;
                 int checkCol = colNum + colChange;
 
-                if (mapChars[checkRow, checkCol] != '#' && mapChars[checkRow, checkCol] != 'N' && mapChars[checkRow, checkCol] != (char)Form1.asciiTiles.alivePlayer)
+                if (mapChars[checkRow, checkCol] != (char)Form1.asciiTiles.wall && mapChars[checkRow, checkCol] != (char)Form1.asciiTiles.aliveEnemy && mapChars[checkRow, checkCol] != (char)Form1.asciiTiles.alivePlayer)
                 {
                     availableDirections.Add((direction)i);
                 }
-                   
+
             }
             return availableDirections;
         }
 
-        public List<direction> DetectPlayer(Player playerCharacter)
+        
+
+        private List<direction> BasicPathing(Player playerCharacter)
         {
             List<direction> optimalDirections = new List<direction>();
             //Add list of Y directions towards the player.
@@ -128,12 +130,27 @@ namespace GrogueTheSecondOne
             }
             return optimalDirections;
         }
+        private bool DetectionRadius(Player playerCharacter, int detectRange)
+        {
+            int playerXDiff, playerYDiff;
+            playerXDiff = playerCharacter.XLoc - colNum;
+            playerYDiff = playerCharacter.YLoc - rowNum;
+            if ((playerXDiff <= detectRange || playerXDiff <= detectRange * -1) && (playerYDiff <= detectRange || playerYDiff <= detectRange * -1))
+                return true;
+            else
+                return false;
+        }
 
         public void MobMoveArrManip(char[,] mapChars, Player playerCharacter)
         {
             List<direction> availableDirections = GetAvailableDirections(mapChars);
+
+           if ( DetectionRadius(playerCharacter, 6)) 
+           {
             List<direction> advantageMove = new List<direction>();
-            advantageMove = availableDirections.Intersect(DetectPlayer(playerCharacter)).ToList();
+            List<direction> pathedmoves = BasicPathing(playerCharacter).ToList();
+            advantageMove = availableDirections.Intersect(pathedmoves).ToList();
+
             if (advantageMove.Count >= 1)
             {
                 //Random to select direction from availabledirections
@@ -141,6 +158,7 @@ namespace GrogueTheSecondOne
 
                 chosenDir = advantageMove[pickedDir];
             }
+           }
             else if (availableDirections.Count >= 1)
             {
                 chosenDir = availableDirections[rnd.Next(0, availableDirections.Count)];
@@ -156,10 +174,9 @@ namespace GrogueTheSecondOne
             prevRowNum = rowNum;
             rowNum += manipulationOperators[0];
             colNum += manipulationOperators[1];
-            // Check if the new position is within the screen boundaries
+            // Check if the new position is within the screen boundaries, rest. Bug Fix
             if (rowNum <= 0 || rowNum >= mapChars.GetLength(0) - 1 || colNum <= 0 || colNum >= mapChars.GetLength(1) - 1)
             {
-                // The new position is outside the screen boundaries, so reset the position to the previous one
                 rowNum = prevRowNum;
                 colNum = prevColNum;
             }
