@@ -29,11 +29,14 @@ namespace GrogueTheSecondOne
         {
             dead = '.',
         }
-        
+
+
 
         public Form1()
         {
             InitializeComponent();
+            this.KeyPreview = true; // Enable KeyPreview for the form
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -43,6 +46,7 @@ namespace GrogueTheSecondOne
             SpawnEnemies(3);
             playerCharacter = new Player(10, 46);
             UpdateEnemyRows(playerCharacter.Sprite, playerCharacter.YLoc, playerCharacter.XLoc, playerCharacter.prevYLoc, playerCharacter.prevXLoc);
+            this.Focus();
 
         }
 
@@ -74,12 +78,12 @@ namespace GrogueTheSecondOne
                 inputFile.Close();
                 MapYCount = lstPlayArea.Items.Count;
                 mapXCount = lstPlayArea.Items[0].ToString().Length;
-    }
+            }
             catch
             {
                 MessageBox.Show("Failed to retrieve level data!");
             }
-            charOriginalMapState = new char[ MapYCount, mapXCount];
+            charOriginalMapState = new char[MapYCount, mapXCount];
             charPlayArea = new char[MapYCount, mapXCount];
 
             //Nested loop to load level into two 2d arrays
@@ -116,16 +120,16 @@ namespace GrogueTheSecondOne
                 UpdateEnemyRows(N.Sprite, N.YLoc, N.XLoc, N.prevYLoc, N.prevXLoc);
         }
 
-       private void RemoveEnemyMob(mobEnemy N)
+        private void RemoveEnemyMob(mobEnemy N)
         {
             N.Die();
             UpdateEnemyRows(N.Sprite, N.YLoc, N.XLoc, N.prevYLoc, N.prevXLoc);
             enemyList.RemoveAt(enemyList.IndexOf(N));
         }
 
-        private void UpdateEnemyRows(char sprite, int YLoc, int XLoc, int prevYLoc, int prevXLoc )
+        private void UpdateEnemyRows(char sprite, int YLoc, int XLoc, int prevYLoc, int prevXLoc)
         {
-           
+
             //Change the chars stored in the playspace
             //Restore the previous tile to the environment
             charPlayArea[prevYLoc, prevXLoc] = charOriginalMapState[prevYLoc, prevXLoc];
@@ -148,6 +152,29 @@ namespace GrogueTheSecondOne
                 newline += charPlayArea[YLoc, x].ToString();
             }
             lstPlayArea.Items[YLoc] = newline;
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.NumPad5)
+                playerCharacter.moveUp(charPlayArea, 0);
+            if (e.KeyCode == Keys.NumPad7)
+                playerCharacter.moveUp(charPlayArea, 1);
+            if (e.KeyCode == Keys.NumPad8)
+                playerCharacter.moveUp(charPlayArea, 2);
+            if (e.KeyCode == Keys.NumPad9)
+                playerCharacter.moveUp(charPlayArea, 3);
+            if (e.KeyCode == Keys.NumPad4)
+                playerCharacter.moveUp(charPlayArea, 4);
+            if (e.KeyCode == Keys.NumPad6)
+                playerCharacter.moveUp(charPlayArea, 5);
+            if (e.KeyCode == Keys.NumPad1)
+                playerCharacter.moveUp(charPlayArea, 6);
+            if (e.KeyCode == Keys.NumPad2)
+                playerCharacter.moveUp(charPlayArea, 7);
+            if (e.KeyCode == Keys.NumPad3)
+                playerCharacter.moveUp(charPlayArea, 8);
+            UpdateEnemyRows(playerCharacter.Sprite, playerCharacter.YLoc, playerCharacter.XLoc, playerCharacter.prevYLoc, playerCharacter.prevXLoc);
         }
     }
 }

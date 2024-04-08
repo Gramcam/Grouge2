@@ -52,13 +52,15 @@ namespace GrogueTheSecondOne
             prevRowNum = rowNum;
             direction chosenDirection = (direction)directionIndex;
             int i = (int)chosenDirection;
-            //looping through directionmanipulation arrays. Array i, index 0 and 1.
+
+            // Looping through direction manipulation arrays. Array i, index 0 and 1.
             int rowChange = directionManipulations[i, 0];
             int colChange = directionManipulations[i, 1];
 
-            //Each direction will be applied to row and col
+            // Each direction will be applied to row and col
             int checkRow = rowNum + rowChange;
             int checkCol = colNum + colChange;
+
             if (mapArr[checkRow, checkCol] == (char)Form1.asciiTiles.wall)
             {
                 rowNum = prevRowNum;
@@ -66,9 +68,10 @@ namespace GrogueTheSecondOne
             }
             else
             {
-            colNum = checkCol;
-            rowNum = checkRow;
+                colNum = checkCol;
+                rowNum = checkRow;
             }
+        
         }
 
 
