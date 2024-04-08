@@ -14,6 +14,7 @@ namespace GrogueTheSecondOne
         private int prevRowNum, prevColNum;
         private Random rnd = new Random();
         public int playerHealth = 3;
+        public int playerTreasure = 0;
         //Movement Enums for 9 directions
         private enum direction
         {

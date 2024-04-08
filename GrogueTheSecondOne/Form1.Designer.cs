@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             lstPlayArea = new ListBox();
-            btnTestChange = new Button();
             SuspendLayout();
             // 
             // lstPlayArea
@@ -43,22 +42,11 @@
             lstPlayArea.Size = new Size(755, 452);
             lstPlayArea.TabIndex = 0;
             // 
-            // btnTestChange
-            // 
-            btnTestChange.Location = new Point(888, 274);
-            btnTestChange.Name = "btnTestChange";
-            btnTestChange.Size = new Size(75, 23);
-            btnTestChange.TabIndex = 1;
-            btnTestChange.Text = "button1";
-            btnTestChange.UseVisualStyleBackColor = true;
-            btnTestChange.Click += btnTestChange_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1060, 612);
-            Controls.Add(btnTestChange);
             Controls.Add(lstPlayArea);
             Name = "Form1";
             Text = "Form1";
@@ -70,6 +58,5 @@
         #endregion
 
         private ListBox lstPlayArea;
-        private Button btnTestChange;
     }
 }

@@ -14,7 +14,9 @@ namespace GrogueTheSecondOne
 
         //List to store EnemyMobs
         List<mobEnemy> enemyList = new List<mobEnemy>();
+        List<Treasure> treasureList = new List<Treasure>();
         private mobEnemy playSpaceEnemy;
+        private Treasure mapTreasure;
 
         private Player playerCharacter;
 
@@ -23,13 +25,9 @@ namespace GrogueTheSecondOne
             empty = '.',
             wall = '#',
             alivePlayer = '@',
-            aliveEnemy = 'N'
+            aliveEnemy = 'N',
+            treasure = '$'
         }
-        public enum mobSprites
-        {
-            
-        }
-
         public Form1()
         {
             InitializeComponent();
@@ -42,17 +40,10 @@ namespace GrogueTheSecondOne
             LoadLevel("Level_1.txt");
             SpawnEnemies(10);
             playerCharacter = new Player(10, 46);
+            SpawnTreasure(4);
             UpdateEnemyRows(playerCharacter.Sprite, playerCharacter.YLoc, playerCharacter.XLoc, playerCharacter.prevYLoc, playerCharacter.prevXLoc);
+
             this.Focus();
-
-        }
-
-
-        private void btnTestChange_Click(object sender, EventArgs e)
-        {
-            //RemoveEnemyMob(enemyList[rnd.Next(0, enemyList.Count())]);
-            playerCharacter.playerMove(charPlayArea, 2);
-            TurnEndBehaviour();
 
         }
 
@@ -90,6 +81,30 @@ namespace GrogueTheSecondOne
             }
 
         }
+        private void SpawnTreasure(int quantity)
+        {
+            for (int i = 0; i < quantity; i++)
+            {
+                int x, y;
+
+                //Choose random location that isnt populated
+                do
+                {
+                    x = rnd.Next(1, mapXCount - 1);
+                    y = rnd.Next(1, MapYCount - 1);
+
+                } while (charPlayArea[y, x] != (char)asciiTiles.empty);
+
+                mapTreasure = new Treasure(y, x);
+
+                treasureList.Add(mapTreasure);
+            }
+            foreach (Treasure T in treasureList)
+            {
+                PopulateTreasure(T.Sprite, T.YLoc, T.XLoc);
+                DrawChangedMap(T.Sprite, T.YLoc, T.XLoc);
+            }
+        }
         private void SpawnEnemies(int quantity)
         {
             for (int i = 0; i < quantity; i++)
@@ -112,38 +127,79 @@ namespace GrogueTheSecondOne
                 UpdateEnemyRows(N.Sprite, N.YLoc, N.XLoc, N.prevYLoc, N.prevXLoc);
         }
 
-
-
-        private void UpdateEnemyRows(char sprite, int YLoc, int XLoc, int prevYLoc, int prevXLoc)
+        private void PopulateTreasure(char sprite, int YLoc, int XLoc)
         {
-
+            charPlayArea[YLoc, XLoc] = sprite;
+        }
+        private void ChangeCharArrays(char sprite, int YLoc, int XLoc, int prevYLoc, int prevXLoc)
+        {
             //Change the chars stored in the playspace
             //Restore the previous tile to the environment
             charPlayArea[prevYLoc, prevXLoc] = charOriginalMapState[prevYLoc, prevXLoc];
             charPlayArea[YLoc, XLoc] = sprite;
 
+        }
+        private void RedrawOriginalRow(char sprite, int YLoc, int XLoc, int prevYLoc, int prevXLoc)
+        {
+            string newline = "";
+
             //Redraw Original Map
             //Use the GetLength method to select array dimension
-            string newline = "";
             for (int g = 0; g < charOriginalMapState.GetLength(1); g++)
             {
                 newline += charPlayArea[prevYLoc, g];
             }
             lstPlayArea.Items[prevYLoc] = newline;
 
-            //Rebuild listbox to display the active map
-            //Place string into the listbox
-            newline = "";
+        }
+        private void DrawChangedMap(char sprite, int YLoc, int XLoc)
+        {
+            charPlayArea[YLoc, XLoc] = sprite;
+            string newline = "";
             for (int x = 0; x < charPlayArea.GetLength(1); x++)
             {
                 newline += charPlayArea[YLoc, x].ToString();
             }
             lstPlayArea.Items[YLoc] = newline;
         }
+
+        private void UpdateEnemyRows(char sprite, int YLoc, int XLoc, int prevYLoc, int prevXLoc)
+        {
+            ChangeCharArrays(sprite, YLoc, XLoc, prevYLoc, prevXLoc);
+            RedrawOriginalRow(sprite, YLoc, XLoc, prevYLoc, prevXLoc);
+            DrawChangedMap(sprite, YLoc, XLoc);
+        }
+
         private void TurnEndBehaviour()
         {
             UpdateEnemyRows(playerCharacter.Sprite, playerCharacter.YLoc, playerCharacter.XLoc, playerCharacter.prevYLoc, playerCharacter.prevXLoc);
+            foreach (Treasure T in treasureList)
+            {
+                PopulateTreasure(T.Sprite, T.YLoc, T.XLoc);
+                DrawChangedMap(T.Sprite, T.YLoc, T.XLoc);
+            }
             List<mobEnemy> enemiesToRemove = new List<mobEnemy>();
+            List<Treasure> treasureToRemove = new List<Treasure>();
+            foreach (Treasure T in treasureList)
+            {
+                T.TreasureCollect(playerCharacter, treasureList);
+            }
+            foreach (Treasure T in treasureList)
+            {
+                if (T.nonActive)
+                {
+                    // Add the enemy that collided with the player to the removal list
+                    treasureToRemove.Add(T);
+                }
+
+            }
+            foreach (Treasure T in treasureToRemove)
+            {
+                treasureList.Remove(T);
+
+                DrawChangedMap('@', T.YLoc, T.XLoc);
+
+            }
             foreach (mobEnemy N in enemyList)
             {
                 N.MobMoveArrManip(charPlayArea, playerCharacter);
@@ -160,9 +216,16 @@ namespace GrogueTheSecondOne
             }
             foreach (mobEnemy N in enemiesToRemove)
             {
-                enemyList.Remove(N); // Safely remove enemies
+                enemyList.Remove(N);
                 UpdateEnemyRows(N.Sprite, N.YLoc, N.XLoc, N.prevYLoc, N.prevXLoc);
             }
+            if (playerCharacter.playerHealth <= 0 && treasureList.Count > 0)
+            {
+                MessageBox.Show($"You got {playerCharacter.playerTreasure} treasures!");
+            }
+            if (treasureList.Count == 0)
+                MessageBox.Show($"You got {playerCharacter.playerTreasure} treasures! Thats all of them!");
+
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
