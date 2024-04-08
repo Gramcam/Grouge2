@@ -9,6 +9,7 @@ namespace GrogueTheSecondOne
         private int mapXCount;
         private char[,] charOriginalMapState;
         private char[,] charPlayArea;
+        private bool gamerun;
 
         private Random rnd = new Random();
 
@@ -36,15 +37,21 @@ namespace GrogueTheSecondOne
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //Load Level Data From Textfile
+            GameStartHandling();
+
+        }
+
+        private void GameStartHandling()
+        {   lstPlayArea.Items.Clear();
+            treasureList.Clear();
+
+
             LoadLevel("Level_1.txt");
             SpawnEnemies(10);
             playerCharacter = new Player(10, 46);
             SpawnTreasure(4);
             UpdateEnemyRows(playerCharacter.Sprite, playerCharacter.YLoc, playerCharacter.XLoc, playerCharacter.prevYLoc, playerCharacter.prevXLoc);
-
-            this.Focus();
-
+            gamerun = true;
         }
 
         private void LoadLevel(string lvl)
@@ -222,32 +229,42 @@ namespace GrogueTheSecondOne
             if (playerCharacter.playerHealth <= 0 && treasureList.Count > 0)
             {
                 MessageBox.Show($"You got {playerCharacter.playerTreasure} treasures!");
+                gamerun = false;
             }
             if (treasureList.Count == 0)
+            {
                 MessageBox.Show($"You got {playerCharacter.playerTreasure} treasures! Thats all of them!");
+                gamerun = false;
+
+            }
 
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.NumPad5)
-                playerCharacter.playerMove(charPlayArea, 0);
-            if (e.KeyCode == Keys.NumPad7)
-                playerCharacter.playerMove(charPlayArea, 1);
-            if (e.KeyCode == Keys.NumPad8)
-                playerCharacter.playerMove(charPlayArea, 2);
-            if (e.KeyCode == Keys.NumPad9)
-                playerCharacter.playerMove(charPlayArea, 3);
-            if (e.KeyCode == Keys.NumPad4)
-                playerCharacter.playerMove(charPlayArea, 4);
-            if (e.KeyCode == Keys.NumPad6)
-                playerCharacter.playerMove(charPlayArea, 5);
-            if (e.KeyCode == Keys.NumPad1)
-                playerCharacter.playerMove(charPlayArea, 6);
-            if (e.KeyCode == Keys.NumPad2)
-                playerCharacter.playerMove(charPlayArea, 7);
-            if (e.KeyCode == Keys.NumPad3)
-                playerCharacter.playerMove(charPlayArea, 8);
-            TurnEndBehaviour();
+            if (gamerun)
+            {
+                if (e.KeyCode == Keys.NumPad5)
+                    playerCharacter.playerMove(charPlayArea, 0);
+                if (e.KeyCode == Keys.NumPad7)
+                    playerCharacter.playerMove(charPlayArea, 1);
+                if (e.KeyCode == Keys.NumPad8)
+                    playerCharacter.playerMove(charPlayArea, 2);
+                if (e.KeyCode == Keys.NumPad9)
+                    playerCharacter.playerMove(charPlayArea, 3);
+                if (e.KeyCode == Keys.NumPad4)
+                    playerCharacter.playerMove(charPlayArea, 4);
+                if (e.KeyCode == Keys.NumPad6)
+                    playerCharacter.playerMove(charPlayArea, 5);
+                if (e.KeyCode == Keys.NumPad1)
+                    playerCharacter.playerMove(charPlayArea, 6);
+                if (e.KeyCode == Keys.NumPad2)
+                    playerCharacter.playerMove(charPlayArea, 7);
+                if (e.KeyCode == Keys.NumPad3)
+                    playerCharacter.playerMove(charPlayArea, 8);
+                TurnEndBehaviour();
+            }
+            else
+                GameStartHandling();
         }
     }
 }
