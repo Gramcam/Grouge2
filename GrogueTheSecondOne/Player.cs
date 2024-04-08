@@ -22,7 +22,7 @@ namespace GrogueTheSecondOne
 
         public Player(int row, int col)
         {
-            asciiSprite = (char)Form1.mobSprites.alivePlayer;
+            asciiSprite = (char)Form1.asciiTiles.alivePlayer;
             rowNum = row;
             colNum = col;
         }

@@ -74,7 +74,7 @@ namespace GrogueTheSecondOne
                 int checkRow = rowNum + rowChange;
                 int checkCol = colNum + colChange;
 
-                if (mapChars[checkRow, checkCol] != '#' && mapChars[checkRow, checkCol] != 'N')
+                if (mapChars[checkRow, checkCol] != '#' && mapChars[checkRow, checkCol] != 'N' && mapChars[checkRow, checkCol] != (char)Form1.asciiTiles.alivePlayer)
                 {
                     availableDirections.Add((direction)i);
                 }
@@ -86,6 +86,7 @@ namespace GrogueTheSecondOne
         public List<direction> DetectPlayer(Player playerCharacter)
         {
             List<direction> optimalDirections = new List<direction>();
+            //Add list of Y directions towards the player.
             //If negative enemy needs to move north
             if (playerCharacter.YLoc - rowNum < 0)
             {
@@ -130,15 +131,14 @@ namespace GrogueTheSecondOne
 
         public void MobMoveArrManip(char[,] mapChars, Player playerCharacter)
         {
-            List<direction> advantageMove = new List<direction>();
             List<direction> availableDirections = GetAvailableDirections(mapChars);
+            List<direction> advantageMove = new List<direction>();
             advantageMove = availableDirections.Intersect(DetectPlayer(playerCharacter)).ToList();
-            //List<direction> availableDirections = availableDirecitons;
             if (advantageMove.Count >= 1)
             {
-
                 //Random to select direction from availabledirections
                 int pickedDir = rnd.Next(0, advantageMove.Count);
+
                 chosenDir = advantageMove[pickedDir];
             }
             else if (availableDirections.Count >= 1)
@@ -148,16 +148,22 @@ namespace GrogueTheSecondOne
 
             //Get the manipulation values from the 2d direction array
             int[] manipulationOperators = new int[2];
-                manipulationOperators[0] = directionManipulations[(int)chosenDir, 0];
-                manipulationOperators[1] = directionManipulations[(int)chosenDir, 1];
+            manipulationOperators[0] = directionManipulations[(int)chosenDir, 0];
+            manipulationOperators[1] = directionManipulations[(int)chosenDir, 1];
            
-                //Apply the changes
-                prevColNum = colNum;
-                prevRowNum = rowNum;
-
-                rowNum += manipulationOperators[0];
-                colNum += manipulationOperators[1];
+            //Apply the changes
+            prevColNum = colNum;
+            prevRowNum = rowNum;
+            rowNum += manipulationOperators[0];
+            colNum += manipulationOperators[1];
+            // Check if the new position is within the screen boundaries
+            if (rowNum <= 0 || rowNum >= mapChars.GetLength(0) - 1 || colNum <= 0 || colNum >= mapChars.GetLength(1) - 1)
+            {
+                // The new position is outside the screen boundaries, so reset the position to the previous one
+                rowNum = prevRowNum;
+                colNum = prevColNum;
             }
+        }
 
 
           

@@ -22,13 +22,14 @@ namespace GrogueTheSecondOne
         {
             empty = '.',
             wall = '#',
+            alivePlayer = '@'
         }
         public enum mobSprites
         {
             dead = '.',
             alive = 'N',
-            alivePlayer = '@'
         }
+        
 
         public Form1()
         {
@@ -39,10 +40,22 @@ namespace GrogueTheSecondOne
         {
             //Load Level Data From Textfile
             LoadLevel("Level_1.txt");
-            SpawnEnemies(9);
-            playerCharacter = new Player(1, 1);
+            SpawnEnemies(59);
+            playerCharacter = new Player(10, 46);
             UpdateEnemyRows(playerCharacter.Sprite, playerCharacter.YLoc, playerCharacter.XLoc, playerCharacter.prevYLoc, playerCharacter.prevXLoc);
 
+        }
+
+
+        private void btnTestChange_Click(object sender, EventArgs e)
+        {
+            //RemoveEnemyMob(enemyList[rnd.Next(0, enemyList.Count())]);
+
+            foreach (mobEnemy N in enemyList)
+            {
+                N.MobMoveArrManip(charPlayArea, playerCharacter);
+                UpdateEnemyRows(N.Sprite, N.YLoc, N.XLoc, N.prevYLoc, N.prevXLoc);
+            }
         }
 
         private void LoadLevel(string lvl)
@@ -79,7 +92,6 @@ namespace GrogueTheSecondOne
             }
 
         }
-
         private void SpawnEnemies(int quantity)
         {
             for (int i = 0; i < quantity; i++)
@@ -100,17 +112,6 @@ namespace GrogueTheSecondOne
             }
             foreach (mobEnemy N in enemyList)
                 UpdateEnemyRows(N.Sprite, N.YLoc, N.XLoc, N.prevYLoc, N.prevXLoc);
-        }
-
-        private void btnTestChange_Click(object sender, EventArgs e)
-        {
-            //RemoveEnemyMob(enemyList[rnd.Next(0, enemyList.Count())]);
-
-            foreach (mobEnemy N in enemyList)
-            {
-                N.MobMoveArrManip(charPlayArea, playerCharacter);
-                UpdateEnemyRows(N.Sprite, N.YLoc, N.XLoc, N.prevYLoc, N.prevXLoc);
-            }
         }
 
        private void RemoveEnemyMob(mobEnemy N)
