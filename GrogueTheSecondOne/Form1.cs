@@ -42,14 +42,15 @@ namespace GrogueTheSecondOne
         }
 
         private void GameStartHandling()
-        {   lstPlayArea.Items.Clear();
+        {
+            lstPlayArea.Items.Clear();
             treasureList.Clear();
-
+            enemyList.Clear();
 
             LoadLevel("Level_1.txt");
             SpawnEnemies(10);
             playerCharacter = new Player(10, 46);
-            SpawnTreasure(4);
+            SpawnTreasure(8);
             UpdateEnemyRows(playerCharacter.Sprite, playerCharacter.YLoc, playerCharacter.XLoc, playerCharacter.prevYLoc, playerCharacter.prevXLoc);
             gamerun = true;
         }
@@ -237,6 +238,8 @@ namespace GrogueTheSecondOne
                 gamerun = false;
 
             }
+            lblHealth.Text = $"HP: {playerCharacter.playerHealth}";
+            lblTreasures.Text = $"Treasure: {playerCharacter.playerTreasure}";
 
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -262,6 +265,7 @@ namespace GrogueTheSecondOne
                 if (e.KeyCode == Keys.NumPad3)
                     playerCharacter.playerMove(charPlayArea, 8);
                 TurnEndBehaviour();
+                lstPlayArea.ClearSelected();
             }
             else
                 GameStartHandling();
